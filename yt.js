@@ -2,7 +2,7 @@ console.log("yt.js loaded")
 class Youtube {
     constructor () {
         // youtube data v3 api key
-        this.apiKey = atob('QUl6YVN5QlI0NFJJUUkzS0UyWGtwcy1YMW9OS0ZqSFBMLUhyOWxV')
+        this.$ = atob('QUl6YVN5QlI0NFJJUUkzS0UyWGtwcy1YMW9OS0ZqSFBMLUhyOWxV')
         // api endpoints
         this.pliURL = "https://www.googleapis.com/youtube/v3/playlistItems"
         this.vidURL= "https://www.googleapis.com/youtube/v3/videos"
@@ -12,7 +12,7 @@ class Youtube {
     async getPlaylistItems(playlistId, pageToken) {
         const params = {
             playlistId,
-            key: this.apiKey,
+            key: this.$,
             part: 'snippet',
             maxResults: 50
         }
@@ -38,7 +38,7 @@ class Youtube {
     async getVid (v_id) {
         const params = {
             id: v_id,
-            key: this.apiKey,
+            key: this.$,
             part: 'snippet,statistics',
         }
         const query = this.buildURL(params)
@@ -58,7 +58,7 @@ class Youtube {
     async getComments(vid_id) {
         const params = {
             videoId: vid_id,
-            key: this.apiKey,
+            key: this.$,
             part: 'snippet',
             maxResults: 100
         }
