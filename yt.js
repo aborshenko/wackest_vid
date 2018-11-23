@@ -20,7 +20,10 @@ class Youtube {
         const response = await fetch(`${this.pliURL}?${query}`)
 
         const responseData = await response.json();
-        return responseData.items.map(item => this.getVid(item.snippet.resourceId.videoId))
+        const vidObjList = responseData.items.map(async item => {
+            return this.getVid(item.snippet.resourceId.videoId)
+        });
+        return vidObjList
     }
 
     async getVid (v_id) {
@@ -32,7 +35,9 @@ class Youtube {
         const query = this.buildURL(params)
         const response = await fetch(`${this.vidURL}?${query}`);
         const responseData = await response.json();
-        return responseData.items[0]
+        const vid = responseData.items[0];
+        vid.statistics.wackness = vid.statistics.dislikeCount / vid.statistics.viewCount * 1000.0
+        return vid
     }
 
     buildURL(params) {
