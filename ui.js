@@ -7,9 +7,14 @@ class UI {
     }
 
     renderVids(vidObjList) {
+        this.clearVids();
         vidObjList.forEach( vidObj =>
             this.appendVid(vidObj)
         )
+    }
+
+    clearVids() {
+        this.vidList.innerHTML = '';
     }
 
     appendVid (vidObj) {
