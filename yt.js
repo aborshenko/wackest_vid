@@ -6,7 +6,7 @@ class Youtube {
         // api endpoints
         this.pliURL = "https://www.googleapis.com/youtube/v3/playlistItems"
         this.vidURL= "https://www.googleapis.com/youtube/v3/videos"
-        this.commentTreadsURL = "https://www.googleapis.com/youtube/v3/commentThreads" 
+        this.commentThreadsURL = "https://www.googleapis.com/youtube/v3/commentThreads" 
     }
 
     async getPlaylistItems(playlistId, pageToken) {
@@ -53,6 +53,25 @@ class Youtube {
         } catch (e) {
             console.warn(e)
         }
+    }
+
+    async getComments(vid_id) {
+        const params = {
+            videoId: vid_id,
+            key: this.apiKey,
+            part: 'snippet',
+            maxResults: 100
+        }
+        const query = this.buildURL(params)
+        // console.log(query)
+        const response = await fetch(`${this.commentThreadsURL}?${query}`)
+        const responseData = await response.json();
+        const comments = responseData.items.map(item => ({
+            author: item.snippet.topLevelComment.snippet.authorDisplayName, 
+            text: item.snippet.topLevelComment.snippet.textDisplay,
+            rudeness: 0
+        }));
+        return comments
     }
 
     buildURL(params) {

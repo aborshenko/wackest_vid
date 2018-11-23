@@ -24,6 +24,6 @@ additionally throw in some low sentiment comments, running them through some sen
 
 ## TODO
 
-* add pagination support to getPlaylistItems
-    * playlistItem call returns a max of 50 vids. I want to compare all vids,
+* Sentiment analysis of comments
 * make ui nicer
+    * load spinner while grabbing vids
