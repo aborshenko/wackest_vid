@@ -20,3 +20,11 @@ can paste urls into to target specific channels or playlist
 look through the vids in the playlist and calculate wackness score
 show the wackest videos and with their wackness score
 additionally throw in some low sentiment comments, running them through some sentiment analysis api (much more worried about this key abuse)
+
+
+## TODO
+
+* add pagination support to getPlaylistItems
+    * playlistItem call returns a max of 50 vids. I want to compare all vids,
+* make ui nicer
+* parse query and grab playlist id if its a url

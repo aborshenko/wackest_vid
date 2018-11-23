@@ -1,29 +1,36 @@
 console.log("app.js loaded")
+// const samplePlaylistId = 'PLjOsBJoP38YgUE671J98dHrUIB08degA7'
 
 const yt = new Youtube();
 const ui = new UI();
 const searchURL = document.getElementById('searchURL');
+
+// add event listener on enter key
 searchURL.addEventListener('keypress', (e) => {
     if (e.keyCode === 13) {
-        yt.getPlaylistItems(searchURL.value)
-            .then(data => getVids(data));
+        yt.getPlaylistItems(queryParse(searchURL.value))
+            .then(data => resolveVids(data))
+            .catch(err => console.warn(err));
     }
 })
 
-const samplePlaylistId = 'PLjOsBJoP38YgUE671J98dHrUIB08degA7'
+// able to parse urls or playlistIds directly
+function queryParse (query) {
+    const re = /list=/gi;
+    if (query.search(re) == -1) {
+        return query;
+    } else {
+        result = query.substring(query.search(re) + 5, query.length);
+        return result
+    }
+}
 
-
-// yt.getPlaylistItems(samplePlaylistId)
-//     .then(data => getVids(data))
-//     .catch(err => console.warn(err));
-
-function getVids (vid_list) {
+// resolve vid Promises and sort by wackness and render
+function resolveVids (vid_list) {
     Promise.all(vid_list)
         .then(data => {
-            console.log(data)
             data.sort((a,b) => b.statistics.wackness - a.statistics.wackness);
-            console.log(data);
-            ui.renderVids(data)
+            ui.renderVids(data);
         })
 }
 
