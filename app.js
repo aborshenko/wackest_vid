@@ -27,10 +27,12 @@ function queryParse (query) {
 
 // resolve vid Promises and sort by wackness and render
 function resolveVids (vid_list) {
+    // console.log(vid_list);
     Promise.all(vid_list)
         .then(data => {
             data.sort((a,b) => b.statistics.wackness - a.statistics.wackness);
-            ui.renderVids(data);
+            console.log(data);
+            // ui.renderVids(data);
         })
 }
 

@@ -9,20 +9,29 @@ class Youtube {
         this.commentTreadsURL = "https://www.googleapis.com/youtube/v3/commentThreads" 
     }
 
-    async getPlaylistItems(playlistId, pageToken = "firstPage") {
+    async getPlaylistItems(playlistId, pageToken) {
         const params = {
             playlistId,
             key: this.apiKey,
             part: 'snippet',
             maxResults: 50
         }
+        if (pageToken) {
+            params["pageToken"] = pageToken
+        }
         const query = this.buildURL(params)
         const response = await fetch(`${this.pliURL}?${query}`)
-
         const responseData = await response.json();
+        const nextPageToken = responseData.nextPageToken;
         const vidObjList = responseData.items.map(async item => {
             return this.getVid(item.snippet.resourceId.videoId)
         });
+        // console.log(vidObjList);
+        if (nextPageToken) {
+            let nextPageVids = await this.getPlaylistItems(playlistId, nextPageToken);
+            // console.log(nextPageVids);
+            vidObjList.push(...nextPageVids);
+        }
         return vidObjList
     }
 
@@ -33,11 +42,17 @@ class Youtube {
             part: 'snippet,statistics',
         }
         const query = this.buildURL(params)
-        const response = await fetch(`${this.vidURL}?${query}`);
-        const responseData = await response.json();
-        const vid = responseData.items[0];
-        vid.statistics.wackness = vid.statistics.dislikeCount / vid.statistics.viewCount * 1000.0
-        return vid
+        try {
+            const response = await fetch(`${this.vidURL}?${query}`);
+            const responseData = await response.json();
+            const vid = responseData.items[0];
+            if (vid) {
+                vid.statistics.wackness = vid.statistics.dislikeCount / vid.statistics.viewCount * 1000.0
+            }
+            return vid
+        } catch (e) {
+            console.warn(e)
+        }
     }
 
     buildURL(params) {
