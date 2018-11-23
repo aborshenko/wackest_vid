@@ -31,8 +31,8 @@ function resolveVids (vid_list) {
     Promise.all(vid_list)
         .then(data => {
             data.sort((a,b) => b.statistics.wackness - a.statistics.wackness);
-            console.log(data);
-            // ui.renderVids(data);
+            // console.log(data);
+            ui.renderVids(data);
         })
 }
 

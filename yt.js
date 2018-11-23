@@ -47,7 +47,7 @@ class Youtube {
             const responseData = await response.json();
             const vid = responseData.items[0];
             if (vid) {
-                vid.statistics.wackness = vid.statistics.dislikeCount / vid.statistics.viewCount * 1000.0
+                vid.statistics.wackness = vid.statistics.dislikeCount / vid.statistics.viewCount * 1000.0 //* Math.log10(vid.statistics.viewCount)
             }
             return vid
         } catch (e) {

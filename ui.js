@@ -8,10 +8,10 @@ class UI {
 
     renderVids(vidObjList) {
         this.clearVids();
-        // console.log(vidObjList);
+        console.log(vidObjList);
         for (let vidObj of vidObjList) {
-            if (!vidObj) {
-                console.log("appending vidObj " + vidObj.id);
+            if (vidObj) {
+                // console.log("appending vidObj " + vidObj.id);
                 this.appendVid(vidObj);
             }
         }
