@@ -8,7 +8,8 @@ class UI {
 
     renderVids(vidObjList) {
         this.clearVids();
-        console.log(vidObjList);
+        // console.log(vidObjList);
+        let first = true;
         for (let vidObj of vidObjList) {
             if (vidObj) {
                 // console.log("appending vidObj " + vidObj.id);
@@ -34,7 +35,7 @@ class UI {
                 </div>
             </div>
             <div class="row">
-            <ul class="list-group">
+            <ul class="list-group" id="${vidObj.id}">
                 <li class="list-group-item d-flex justify-content-between align-items-center">Wackness Score (higher is wacker): ${vidObj.statistics.wackness}</li>
                 <li class="list-group-item d-flex justify-content-between align-items-center">View Count: ${vidObj.statistics.viewCount}</li>
                 <li class="list-group-item d-flex justify-content-between align-items-center">Dislike Count: ${vidObj.statistics.dislikeCount}</li>
@@ -44,5 +45,14 @@ class UI {
             </div>
         </div>
         `
+    }
+
+    addComment(elem, comment) {
+        const list_item = document.createElement('li');
+        list_item.className = 'list-group-item d-flex justify-content-between align-items-center'
+        list_item.appendChild(document.createTextNode(`
+            ${comment.author} had this to say: 
+            ${comment.text}`))
+        elem.appendChild(list_item)
     }
 }

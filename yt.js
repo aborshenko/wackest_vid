@@ -7,6 +7,7 @@ class Youtube {
         this.pliURL = "https://www.googleapis.com/youtube/v3/playlistItems"
         this.vidURL= "https://www.googleapis.com/youtube/v3/videos"
         this.commentThreadsURL = "https://www.googleapis.com/youtube/v3/commentThreads" 
+        this.textAnalyzer = new Sentiment();
     }
 
     async getPlaylistItems(playlistId, pageToken) {
@@ -60,17 +61,21 @@ class Youtube {
             videoId: vid_id,
             key: this.$,
             part: 'snippet',
-            maxResults: 100
+            maxResults: 10
         }
         const query = this.buildURL(params)
         // console.log(query)
         const response = await fetch(`${this.commentThreadsURL}?${query}`)
         const responseData = await response.json();
-        const comments = responseData.items.map(item => ({
+        const comments = responseData.items.map(async (item) => {
+            const rudeness = await this.textAnalyzer.analyze(item.snippet.topLevelComment.snippet.textDisplay)
+            return {
             author: item.snippet.topLevelComment.snippet.authorDisplayName, 
             text: item.snippet.topLevelComment.snippet.textDisplay,
-            rudeness: 0
-        }));
+            rudeness
+            }
+        }
+        );
         return comments
     }
 
