@@ -61,7 +61,7 @@ class Youtube {
             videoId: vid_id,
             key: this.$,
             part: 'snippet',
-            maxResults: 10
+            maxResults: 50
         }
         const query = this.buildURL(params)
         // console.log(query)

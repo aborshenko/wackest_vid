@@ -37,6 +37,7 @@ function resolveVids (vid_list, callback) {
             callback();
         })
 }
+// handler to add click listeners to cards, gets fired after vids render
 
 function addListenersToCards() {
     elements = document.getElementsByClassName('list-group')
@@ -46,13 +47,16 @@ function addListenersToCards() {
     }
 }
 
+// finds rude comment and updates a card element with one
 function resolveComments(v_id) {
     yt.getComments(v_id)
         .then(data => {
             Promise.all(data)
                 .then(comments => {
                    comments.sort((a,b) => a.rudeness - b.rudeness)
-                   ui.addComment(document.getElementById(v_id),comments[0])
+                   rudest_comments = comments.filter(com => com.rudeness <= -0.4)
+                   sample_rude_comment = rudest_comments[Math.floor(Math.random() * rudest_comments.length)];
+                   ui.addComment(document.getElementById(v_id),sample_rude_comment)
                 })
         })
 }
