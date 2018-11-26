@@ -4,15 +4,14 @@ console.log("app.js loaded")
 const yt = new Youtube();
 const ui = new UI();
 const sent = new Sentiment();
-const searchURL = document.getElementById('searchURL');
+const searchForm = document.getElementById('search-form');
 
 // add event listener on enter key
-searchURL.addEventListener('keypress', (e) => {
-    if (e.keyCode === 13) {
-        yt.getPlaylistItems(queryParse(searchURL.value))
-            .then(data => resolveVids(data, addListenersToCards))
-            .catch(err => console.warn(err));
-    }
+searchForm.addEventListener('submit', (e) => {
+    yt.getPlaylistItems(queryParse(searchURL.value))
+        .then(data => resolveVids(data, addListenersToCards))
+        .catch(err => console.warn(err));
+    e.preventDefault();
 })
 
 // able to parse urls or playlistIds directly
